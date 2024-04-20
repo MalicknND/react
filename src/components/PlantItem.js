@@ -1,21 +1,34 @@
-import CareScale from "./CareScale";
-import "../styles/PlantItem.css";
+import { plantList } from "../datas/plantList";
+import PlantItem from "./PlantItem";
+import "../styles/ShoppingList.css";
 
-function handleClick(plantName) {
-  alert(`Vous voulez acheter 1 ${plantName}? Très bon choix 🌱✨`);
-}
+function ShoppingList() {
+  const categories = plantList.reduce(
+    (acc, plant) =>
+      acc.includes(plant.category) ? acc : acc.concat(plant.category),
+    []
+  );
 
-function PlantItem({ cover, name, water, light }) {
   return (
-    <li className="lmj-plant-item" onClick={() => handleClick(name)}>
-      <img className="lmj-plant-item-cover" src={cover} alt={`${name} cover`} />
-      {name}
-      <div>
-        <CareScale careType="water" scaleValue={water} />
-        <CareScale careType="light" scaleValue={light} />
-      </div>
-    </li>
+    <div className="lmj-shopping-list">
+      <ul>
+        {categories.map((cat) => (
+          <li key={cat}>{cat}</li>
+        ))}
+      </ul>
+      <ul className="lmj-plant-list">
+        {plantList.map(({ id, cover, name, water, light }) => (
+          <PlantItem
+            key={id}
+            cover={cover}
+            name={name}
+            water={water}
+            light={light}
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
 
-export default PlantItem;
+export default ShoppingList;
